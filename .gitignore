@@ -1,0 +1,7 @@
+# IntelliJ / WebStorm / PyCharm
+.idea/
+
+scope.md
+
+# Virtual environment
+venv/
