@@ -31,7 +31,7 @@ def train_model(df):
 
     
     # Save the label encoder
-    with open('label_encoder.pkl', 'wb') as f:
+    with open('model/label_encoder.pkl', 'wb') as f:
         pickle.dump(label_encoder, f)
 
     # 3. Text Vectorization
@@ -42,15 +42,14 @@ def train_model(df):
     vectorize_layer.adapt(X_train)
 
     # Save the vocabulary
-    with open('vectorize_layer.pkl', 'wb') as f:
-        pickle.dump({'config': vectorize_layer.get_config(),
-                     'weights': vectorize_layer.get_weights()}, f)
+    with open('model/vectorize_layer.pkl', 'wb') as f:
+        pickle.dump(vectorize_layer.get_vocabulary(), f)
 
     # Build Model
     num_classes = len(label_encoder.classes_)
+    # Define a model that takes integer sequences as input
     model = Sequential([
-        Input(shape=(1,), dtype=tf.string, name="input_layer"),
-        vectorize_layer,
+        Input(shape=(None,), dtype='int64', name="input_layer"),
         Embedding(
             input_dim=len(vectorize_layer.get_vocabulary()),
             output_dim=128,
@@ -69,17 +68,21 @@ def train_model(df):
     )
 
     print("Starting model training...")
+    # Vectorize the text data before passing it to the model
+    X_train_vectorized = vectorize_layer(tf.constant(X_train.to_numpy(), dtype=tf.string))
+    X_val_vectorized = vectorize_layer(tf.constant(X_val.to_numpy(), dtype=tf.string))
+    
     history = model.fit(
-        tf.constant(X_train.to_numpy(), dtype=tf.string), y_train_encoded,
+        X_train_vectorized, y_train_encoded,
         epochs=15,
-        validation_data=(tf.constant(X_val.to_numpy(), dtype=tf.string), y_val_encoded),
+        validation_data=(X_val_vectorized, y_val_encoded),
         batch_size=32,
         callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)]
     )
     print("Model training finished.")
 
     # 6. Save Model
-    model.save('invoice_model.keras')
+    model.save('model/model.keras')
     print("Model saved to 'invoice_model.keras'")
     
     return model, X_val, y_val_encoded, label_encoder
@@ -89,7 +92,8 @@ def evaluate_model(model, X_val, y_val_encoded, label_encoder):
     print("\n--- Model Evaluation ---")
     
     # Generate predictions
-    y_pred_probs = model.predict(tf.constant(X_val.to_numpy(), dtype=tf.string))
+    X_val_vectorized = vectorize_layer(tf.constant(X_val.to_numpy(), dtype=tf.string))
+    y_pred_probs = model.predict(X_val_vectorized)
     y_pred = np.argmax(y_pred_probs, axis=1)
 
     # Classification Report
