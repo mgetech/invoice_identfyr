@@ -8,3 +8,59 @@ venv/
 
 python-ml/.pytest_cache
 python-ml/__pycache__
+
+
+
+# ===============================================
+# Backend Service Specific Ignores
+# ===============================================
+
+# General Backend Files
+/backend/HELP.md
+
+# Gradle Build System
+/backend/.gradle/
+/backend/build/
+!/backend/gradle/wrapper/gradle-wrapper.jar
+# WARNING: These negation patterns are unusual.
+# They might re-include compiled output if 'build/' is ignored globally.
+# Consider removing if you want to exclude all compiled output.
+!/backend/**/src/main/**/build/
+!/backend/**/src/test/**/build/
+
+### Backend STS ###
+/backend/.apt_generated
+/backend/.classpath
+/backend/.factorypath
+/backend/.project
+/backend/.settings
+/backend/.springBeans
+/backend/.sts4-cache
+/backend/bin/
+# WARNING: These negation patterns are unusual.
+# They might re-include compiled output if 'bin/' is ignored globally.
+# Consider removing if you want to exclude all compiled output.
+!/backend/**/src/main/**/bin/
+!/backend/**/src/test/**/bin/
+
+### Backend IntelliJ IDEA ###
+/backend/.idea/
+/backend/*.iws
+/backend/*.iml
+/backend/*.ipr
+/backend/out/
+# WARNING: These negation patterns are unusual.
+# They might re-include compiled output if 'out/' is ignored globally.
+# Consider removing if you want to exclude all compiled output.
+!/backend/**/src/main/**/out/
+!/backend/**/src/test/**/out/
+
+### Backend NetBeans ###
+/backend/nbproject/private/
+/backend/nbbuild/
+/backend/dist/
+/backend/nbdist/
+/backend/.nb-gradle/
+
+### Backend VS Code ###
+/backend/.vscode/
