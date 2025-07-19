@@ -1,0 +1,10 @@
+fastapi
+tensorflow
+scikit-learn
+pandas
+jupyter
+matplotlib
+seaborn
+uvicorn
+python-decouple
+pytest
