@@ -5,3 +5,6 @@ scope.md
 
 # Virtual environment
 venv/
+
+python-ml/.pytest_cache
+python-ml/__pycache__
