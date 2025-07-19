@@ -7,3 +7,4 @@ matplotlib
 seaborn
 uvicorn
 python-decouple
+pytest
