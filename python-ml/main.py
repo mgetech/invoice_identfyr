@@ -1,6 +1,6 @@
 import pickle
 import tensorflow as tf
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import numpy as np
 import os
@@ -42,6 +42,9 @@ class PredictionResponse(BaseModel):
 async def predict_category(item: InvoiceItem):
     """
     Predicts the category of an invoice item.\n\n    - **description**: The invoice item text.\n    """
+    if "error" in item.description.lower():
+        raise HTTPException(status_code=400, detail="This is a simulated error from FastAPI.")
+
     # Preprocess the input using the loaded vectorizer
     vectorized_description = vectorize_layer([item.description])
 
