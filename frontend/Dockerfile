@@ -1,31 +1,33 @@
-# Stage 1: Build the React application
+# Stage 1: Build the Next.js application
 FROM node:18-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 
 # Install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build the application for standalone output
+RUN NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL npm run build
 
-# Stage 2: Serve the application from Nginx
-FROM nginx:1.21.6-alpine
+# Stage 2: Run the Next.js application in standalone mode
+FROM node:18-alpine AS runner
 
-# Copy the built application from the build stage
-COPY --from=build /app/out /usr/share/nginx/html
+WORKDIR /app
 
-# Copy the nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+ENV NODE_ENV=production
 
-# Expose port 3000
+# Copy necessary files from the build stage
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/public ./public
+
 EXPOSE 3000
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.js"]
