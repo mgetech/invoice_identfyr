@@ -36,6 +36,9 @@ describe('InvoiceCategorizer', () => {
     });
 
     it('shows an error message when the api call fails', async () => {
+        // Suppress console.error for this test
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
         mockedAxios.post.mockRejectedValue(new Error('Network Error'));
 
         render(<InvoiceCategorizer />);

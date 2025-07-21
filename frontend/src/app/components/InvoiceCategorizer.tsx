@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, Grid, Typography, Alert, CircularProgress } from '@mui/material';
+import { TextField, Button, Typography, Alert, CircularProgress, Container, Box } from '@mui/material';
 
 const InvoiceCategorizer = () => {
     const [description, setDescription] = useState('');
@@ -38,17 +37,17 @@ const InvoiceCategorizer = () => {
     };
 
     return (
-        <Grid container spacing={2} direction="column" alignItems="center" style={{ marginTop: '2rem' }}>
-            <Grid item>
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     Invoice Item Categorizer
                 </Typography>
-            </Grid>
-            <Grid item xs={12} sm={8} md={6}>
                 <TextField
                     fullWidth
                     label="Invoice Item Description"
                     variant="outlined"
+                    multiline
+                    rows={4}
                     value={description}
                     onChange={(e) => {
                         setDescription(e.target.value);
@@ -60,30 +59,37 @@ const InvoiceCategorizer = () => {
                     error={inputError}
                     helperText={inputError ? "Please enter a description." : ""}
                 />
-            </Grid>
-            <Grid item>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                    style={{ position: 'relative' }}
-                >
-                    {loading && <CircularProgress size={24} style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -12, marginLeft: -12 }} />}
-                    Categorize
-                </Button>
-            </Grid>
-            {category && (
-                <Grid item>
-                    <Alert severity="success">Category: {category}</Alert>
-                </Grid>
-            )}
-            {error && !inputError && (
-                <Grid item>
-                    <Alert severity="error">{error}</Alert>
-                </Grid>
-            )}
-        </Grid>
+                <Box sx={{ position: 'relative' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                    >
+                        Categorize
+                    </Button>
+                    {loading && (
+                        <CircularProgress
+                            size={24}
+                            sx={{
+                                color: 'primary.main',
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                            }}
+                        />
+                    )}
+                </Box>
+                {category && (
+                    <Alert severity="success" sx={{ width: '100%' }}>Category: {category}</Alert>
+                )}
+                {error && !inputError && (
+                    <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>
+                )}
+            </Box>
+        </Container>
     );
 };
 
