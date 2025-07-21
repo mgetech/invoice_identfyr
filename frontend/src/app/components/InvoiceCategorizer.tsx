@@ -24,7 +24,7 @@ const InvoiceCategorizer = () => {
         setInputError(false);
 
         try {
-            const response = await axios.post('http://localhost:8080/api/categorize', description, {
+            const response = await axios.post('/api/categorize', description, {
                 headers: { 'Content-Type': 'text/plain' }
             });
             setCategory(response.data);
