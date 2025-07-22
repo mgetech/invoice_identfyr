@@ -14,7 +14,7 @@ The application follows a three-tiered architecture:
 `User Input (React)` -> `HTTP POST (axios)` -> `Java API` -> `HTTP POST (WebClient)` -> `Python API` -> `ML Model Prediction` -> `Response to Java` -> `Response to React` -> `Display Result`
 
 
-![](https://github.com/mgetech/invoice_identfyr/call-Flow.png)
+![Call Flow](https://raw.githubusercontent.com/mgetech/invoice_identfyr/main/call-Flow.png)
 
 ## Tech Stack
 
