@@ -1,4 +1,3 @@
-# Stage 1: Build the Next.js application
 FROM node:18-alpine AS build
 
 WORKDIR /app
@@ -6,11 +5,9 @@ WORKDIR /app
 ARG NEXT_PUBLIC_BACKEND_URL
 ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 
-# Install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the application code
 COPY . .
 
 # Build the application for standalone output

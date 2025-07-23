@@ -1,5 +1,4 @@
-# Stage 1: Build the application
-FROM gradle:8.5.0-jdk21-alpine AS build
+FROM gradle:8.5.0-jdk21 AS build
 
 WORKDIR /app
 
@@ -8,6 +7,9 @@ COPY build.gradle settings.gradle /app/
 # Copy the gradle wrapper
 COPY gradlew /app/
 COPY gradle /app/gradle
+
+# Make gradlew executable
+RUN chmod +x ./gradlew
 
 COPY src /app/src
 
@@ -20,6 +22,9 @@ WORKDIR /app
 
 COPY gradlew /app/
 COPY gradle /app/gradle
+
+# Make gradlew executable
+RUN chmod +x ./gradlew
 
 COPY build.gradle /app/
 COPY settings.gradle /app/

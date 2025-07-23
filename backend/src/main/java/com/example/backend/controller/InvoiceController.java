@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import org.springframework.http.MediaType; // Import MediaType
-import java.util.Map; // For easily creating a JSON-like map
+import org.springframework.http.MediaType;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +37,8 @@ public class InvoiceController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(requestPayload)
                 .retrieve()
-                .bodyToMono(Map.class) // Expect a Map (JSON object)
-                .map(responseMap -> (String) responseMap.get("category")) // Extract the 'category' value
+                .bodyToMono(Map.class)
+                .map(responseMap -> (String) responseMap.get("category"))
                 .doOnSuccess(category -> log.info("Successfully categorized invoice item. Category: {}", category))
                 .doOnError(error -> log.error("Error categorizing invoice item: {}", error.getMessage()));
     }

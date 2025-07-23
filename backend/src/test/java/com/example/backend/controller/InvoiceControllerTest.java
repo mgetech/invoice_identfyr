@@ -22,12 +22,12 @@ class InvoiceControllerTest {
     private WebTestClient webTestClient;
 
     @Mock
-    private WebClient mockWebClient; // This mock is still needed and used by the controller
+    private WebClient mockWebClient;
 
     @Mock
-    private WebClient.RequestBodyUriSpec requestBodyUriSpec; // For post().uri()
+    private WebClient.RequestBodyUriSpec requestBodyUriSpec;
     @Mock
-    private WebClient.RequestBodySpec requestBodySpec; // For bodyValue()
+    private WebClient.RequestBodySpec requestBodySpec;
     @Mock
     private WebClient.RequestHeadersSpec requestHeadersSpec; // For retrieve()
     @Mock
@@ -39,7 +39,6 @@ class InvoiceControllerTest {
     void setUp() {
         invoiceController = new InvoiceController(mockWebClient);
 
-        // Initialize WebTestClient
         webTestClient = WebTestClient.bindToController(invoiceController)
                 .controllerAdvice(new GlobalExceptionHandler())
                 .build();
@@ -50,7 +49,6 @@ class InvoiceControllerTest {
         String invoiceItemDescription = "Test Invoice Item";
         String expectedCategory = "Test Category";
 
-        // The controller now expects a Map from the WebClient call
         Map<String, String> pythonApiResponse = Map.of("category", expectedCategory);
 
         // Mock the WebClient chain of calls
@@ -66,6 +64,6 @@ class InvoiceControllerTest {
                 .bodyValue(invoiceItemDescription)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(String.class).isEqualTo(expectedCategory); // Expect the extracted category string
+                .expectBody(String.class).isEqualTo(expectedCategory);
     }
 }

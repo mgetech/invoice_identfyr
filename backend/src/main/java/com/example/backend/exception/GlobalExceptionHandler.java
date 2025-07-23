@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, HttpServletRequest request) {
-        log.error("Exception: {}", ex.getMessage(), ex); // Log the full exception for better debugging
+        log.error("Exception: {}", ex.getMessage(), ex);
 
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
